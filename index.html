@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lorteservice – Hestemøg leveret til døren</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --soil:    #2c1a0e;
+      --earth:   #5c3d1e;
+      --mud:     #8b6239;
+      --straw:   #c9a84c;
+      --cream:   #f5f0e8;
+      --leaf:    #4a7c3f;
+      --moss:    #6b9e5e;
+      --accent:  #d4a017;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--soil);
+      font-family: 'Lora', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--soil) 0%, var(--earth) 55%, #3d2410 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 80px;
+      background: var(--cream);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    /* floating straw flecks */
+    .fleck {
+      position: absolute;
+      width: 3px;
+      border-radius: 2px;
+      background: var(--straw);
+      opacity: 0.18;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.18; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--straw);
+      color: var(--soil);
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      padding: 0.35rem 1.2rem;
+      border-radius: 100px;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    h1 span { color: var(--straw); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: #c9b89a;
+      max-width: 520px;
+      margin: 1.5rem auto 2.5rem;
+      line-height: 1.65;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--leaf);
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 1rem 2.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, transform 0.15s;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .cta-btn:hover { background: var(--moss); transform: translateY(-2px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 5rem 2rem; }
+
+    .container { max-width: 860px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mud);
+      margin-bottom: 0.6rem;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      color: var(--soil);
+    }
+
+    p { line-height: 1.75; color: #4a3120; }
+
+    /* ── PRICING ── */
+    .pricing {
+      background: var(--soil);
+      color: var(--cream);
+      border-radius: 16px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .pricing { grid-template-columns: 1fr; }
+    }
+
+    .price-card {
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .price-card .amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--straw);
+      line-height: 1;
+    }
+
+    .price-card .unit { font-size: 0.85rem; color: #c9b89a; margin-top: 0.3rem; }
+    .price-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--cream); }
+    .price-card p { color: #c9b89a; font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── TIPS ── */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .tip-card {
+      background: #fff;
+      border-left: 4px solid var(--leaf);
+      border-radius: 6px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(44,26,14,0.07);
+    }
+
+    .tip-card .icon { font-size: 1.8rem; margin-bottom: 0.7rem; }
+    .tip-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .tip-card p { font-size: 0.88rem; line-height: 1.65; }
+
+    /* ── DELIVERY ── */
+    .delivery-band {
+      background: linear-gradient(135deg, var(--leaf) 0%, #3a6b30 100%);
+      color: #fff;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .delivery-band h2 { color: #fff; }
+    .delivery-band p { color: rgba(255,255,255,0.85); max-width: 560px; margin: 1rem auto 0; }
+
+    .delivery-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .chip {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 100px;
+      padding: 0.5rem 1.3rem;
+      font-size: 0.9rem;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ── CONTACT ── */
+    .contact-section { background: var(--cream); }
+
+    .contact-box {
+      background: var(--soil);
+      color: var(--cream);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-box::before {
+      content: '💩';
+      position: absolute;
+      font-size: 12rem;
+      opacity: 0.04;
+      top: -2rem;
+      right: -2rem;
+      line-height: 1;
+    }
+
+    .contact-box h2 { color: var(--straw); margin-bottom: 0.5rem; }
+    .contact-box p { color: #c9b89a; max-width: 480px; margin: 0 auto 2rem; }
+
+    .phone-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--straw);
+      color: var(--soil);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding: 1rem 2.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .phone-link:hover { background: var(--accent); transform: scale(1.03); }
+
+    .contact-detail {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #a08060;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--soil);
+      color: #6b4e2e;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer span { color: var(--straw); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--straw);
+      margin: 1.2rem 0 1.8rem;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <!-- animated straw flecks -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const hero = document.querySelector('.hero');
+        for (let i = 0; i < 18; i++) {
+          const f = document.createElement('div');
+          f.className = 'fleck';
+          f.style.cssText = `
+            left: ${Math.random()*100}%;
+            height: ${12+Math.random()*30}px;
+            animation-duration: ${6+Math.random()*10}s;
+            animation-delay: ${-Math.random()*12}s;
+          `;
+          hero.appendChild(f);
+        }
+      });
+    </script>
+
+    <div class="badge">🌱 100% naturlig gødning · Vejle-området</div>
+    <h1>Lorte<span>service</span></h1>
+    <p class="hero-sub">
+      Frisk hestemøg leveret til din dør — det bedste din have nogensinde har fået.
+    </p>
+    <a href="#bestil" class="cta-btn">Bestil lort →</a>
+  </header>
+
+  <!-- HVAD ER DET -->
+  <section>
+    <div class="container">
+      <p class="section-label">Om produktet</p>
+      <h2>Naturens bedste gødning</h2>
+      <div class="divider"></div>
+      <p>
+        Hestemøg er en af de mest effektive og skånsomme naturgødninger du kan give din have.
+        Det er rigt på kvælstof, fosfor og kalium — de tre næringsstoffer dine planter elsker mest.
+        I modsætning til kunstgødning frigiver hestemøg sine næringsstoffer langsomt og jævnt,
+        i takt med at jordens mikroorganismer nedbryder det. Det styrker jordens struktur,
+        holder på fugt og giver rødderne optimale vækstbetingelser — sæson efter sæson.
+      </p>
+      <br/>
+      <p>
+        Hos Lorteservice leverer vi frisk hestemøg direkte fra stald til dør,
+        så du slipper for selv at hente og slæbe.
+      </p>
+
+      <div style="margin-top:2.5rem; background:#fff; border-radius:12px; padding:2rem 2.5rem; box-shadow:0 2px 16px rgba(44,26,14,0.08); border-left:5px solid var(--straw);">
+        <p style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--soil); margin-bottom:0.6rem;">
+          🐴 Møget kommer fra Kalle
+        </p>
+        <p>
+          Kalle er en smuk Araber, og det er hans møg du får leveret. Arabere er kendte for
+          at producere et fint og let møg — perfekt til haven. Kalle står på
+          <strong>tørv</strong> med en smule <strong>hamp</strong> som strøelse.
+        </p>
+        <p style="margin-top:1rem;">
+          Tørv er mørkt og har en sphagnumlignende, luftig struktur der binder fugt og næringsstoffer
+          effektivt. Det gør møget særligt velegnet til <strong>køkkenhaver</strong>, hvor jordens
+          evne til at holde på vand og give rødderne luft er afgørende. Hampen bidrager med
+          ekstra fibre der langsomt nedbrydes og forbedrer jordstrukturen yderligere.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIS -->
+  <section style="padding-top:0;">
+    <div class="container">
+      <p class="section-label">Priser</p>
+      <h2>Simpelt og fair</h2>
+      <div class="divider"></div>
+
+      <div class="pricing">
+        <div class="price-card">
+          <h3>Løs levering</h3>
+          <div class="amount">65<sup style="font-size:1.5rem">kr</sup></div>
+          <div class="unit">pr. affaldspose-mængde</div>
+          <p style="margin-top:1rem;">Du modtager hestemøget løst — klar til at sprede direkte i bedet.</p>
+        </div>
+        <div class="price-card">
+          <h3>Pakket levering</h3>
+          <div class="amount">80<sup style="font-size:1.5rem">kr</sup></div>
+          <div class="unit">pr. sæk (65 kr + 15 kr pakkegebyr)</div>
+          <p style="margin-top:1rem;">Møget pakkes i sæk, så du nemt kan opbevare det til senere brug.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section style="background:#f0ebe0; padding-top:4rem; padding-bottom:4rem;">
+    <div class="container">
+      <p class="section-label">Haveguide</p>
+      <h2>Sådan bruger du det</h2>
+      <div class="divider"></div>
+      <p>Hestemøg er ikke bare til roserne — det kan bruges i hele haven. Her er de vigtigste råd:</p>
+
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="icon">🌹</div>
+          <h3>Rosenbede & stauder</h3>
+          <p>Spred 4–6 liter pr. m² tidligt forår. Grave det let ned i det øverste jordlag og lad planterne nyde den langsomme næringsforsyning hele sæsonen.</p>
+        </div>
+        <div class="tip-card">
+          <div class="icon">🥕</div>
+          <h3>Køkkenhave & urtehave</h3>
+          <p>Bedst påført om efteråret, så næringen "brænder af" inden forårssåning. Brug 2–4 liter pr. m² og bland det godt med de øverste 20–25 cm jord.</p>
+        </div>
+        <div class="tip-card">
+          <div class="icon">🌿</div>
+          <h3>Højbede</h3>
+          <p>Bland hestemøg i jordmixen når du anlægger bedet — det giver en fantastisk næringsrig start. Suppler med et lag på toppen hvert efterår.</p>
+        </div>
+        <div class="tip-card">
+          <div class="icon">🌳</div>
+          <h3>Træer & buske</h3>
+          <p>Spred et lag komposteret hestemøg i dripzonen rundt om træet og blend let i overfladen. Undgå direkte kontakt med stammen.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:2rem; font-style:italic; font-size:0.88rem; color:#6b4e2e;">
+        💡 Tip: Frisk hestemøg har lavt indhold af næringsstoffer — det er svært at overgøde med det.
+        Lad det kompostere et år for det absolut bedste resultat om foråret.
+      </p>
+    </div>
+  </section>
+
+  <!-- LEVERING -->
+  <div class="delivery-band">
+    <p class="section-label" style="color:rgba(255,255,255,0.6);">Levering</p>
+    <h2>Vi kører til dig — hver lørdag</h2>
+    <p>
+      Vi leverer rutinemæssigt hver lørdag morgen i postnummer 7080-området.
+      Har du akut brug for lort? Ring til Cecilie, og vi finder en løsning.
+    </p>
+    <div class="delivery-chips">
+      <span class="chip">📦 Postnummer 7080</span>
+      <span class="chip">🗓️ Levering hver lørdag</span>
+      <span class="chip">⚡ Akutlevering mulig</span>
+      <span class="chip">🌱 Privatkunder</span>
+    </div>
+  </div>
+
+  <!-- KONTAKT -->
+  <section class="contact-section" id="bestil">
+    <div class="container">
+      <p class="section-label">Kontakt</p>
+      <h2>Klar til at bestille?</h2>
+      <div class="divider"></div>
+
+      <div class="contact-box">
+        <h2>Ring til Cecilie</h2>
+        <p>
+          Send en besked eller ring for at bestille. Fortæl hvor mange sække du har brug for,
+          og om du ønsker pakket levering.
+        </p>
+        <a href="tel:28309770" class="phone-link">
+          📞 2830 9770
+        </a>
+        <div class="contact-detail">Cecilie · Lorteservice · Vejle</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <span>Lorteservice</span> · Vejle · Tlf. 2830 9770</p>
+    <p style="margin-top:0.4rem;">Naturlig hestemøg leveret med kærlighed 🌱</p>
+  </footer>
+
+</body>
+</html>
